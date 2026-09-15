@@ -1,0 +1,39 @@
+# ============================================================
+#  Adaptive ML - Wireless Channel Intelligence
+#  .gitignore — keeps repo under GitHub's 25 MB limit
+# ============================================================
+
+# --- DATASET (161 MB) — download separately via DeepMIMO ---
+deepmimo_scenarios/
+
+# --- LARGE MODEL FILES (exceeds GitHub limits) ---
+models/beam_spatial.pkl     # 107 MB  (KNN spatial index)
+models/beam_rf.pkl          # 22 MB   (Random Forest 64-class)
+
+# --- Python cache ---
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# --- Jupyter checkpoints ---
+.ipynb_checkpoints/
+
+# --- Virtual environments ---
+venv/
+env/
+.venv/
+
+# --- Logs & temp files ---
+*.log
+server.log
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
