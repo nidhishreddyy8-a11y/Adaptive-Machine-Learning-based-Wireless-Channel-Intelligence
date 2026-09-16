@@ -2,6 +2,8 @@
 
 An adaptive machine learning framework for predictive wireless channel estimation, dynamic tracking, beam prediction, and link intelligence powered by DeepMIMO 3.5 GHz channel ray-tracing data.
 
+🌐 **Live Interactive Web Demo**: [https://nidhishreddyy8-a11y.github.io/Adaptive-Machine-Learning-based-Wireless-Channel-Intelligence/](https://nidhishreddyy8-a11y.github.io/Adaptive-Machine-Learning-based-Wireless-Channel-Intelligence/)
+
 ---
 
 ## 📌 Overview
