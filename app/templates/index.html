@@ -10,267 +10,355 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-  <!-- GSAP & ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-  <!-- Dynamic Cursor Spotlight Follower -->
-  <div class="cursor-glow" id="cursorGlow"></div>
+  <!-- =========================================================
+       PERSISTENT NAVIGATION HEADER (always visible)
+       ========================================================= -->
+  <header class="nav-bar" id="mainNav">
+    <div class="nav-brand">
+      <div class="brand-core"></div>
+      <span class="brand-text">CHANNEL AI</span>
+      <span class="brand-subtag">· DeepMIMO 3.5 GHz</span>
+    </div>
 
-  <!-- Parallax Anti-Gravity Ambient Environment -->
-  <div class="space-canvas">
-    <div class="perspective-grid"></div>
-    <div class="ambient-nebula nebula-1"></div>
-    <div class="ambient-nebula nebula-2"></div>
-    <div class="ambient-nebula nebula-3"></div>
-  </div>
+    <!-- Dashboard Tab Navigation (top-right) -->
+    <nav class="dashboard-tabs" role="navigation" aria-label="Dashboard pages">
+      <button class="dash-tab active" data-page="overview" id="tab-overview">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="dash-tab" data-page="inference" id="tab-inference">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Inference
+      </button>
+      <button class="dash-tab" data-page="benchmarks" id="tab-benchmarks">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Benchmarks
+      </button>
+      <button class="dash-tab" data-page="mobility" id="tab-mobility">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Mobility
+      </button>
+    </nav>
 
-  <!-- Main Anti-Gravity Viewport Stage -->
-  <div class="viewport-stage" id="viewportStage">
+    <div class="nav-actions">
+      <span class="model-status-pill">
+        <span class="status-dot"></span>
+        <span class="status-txt">7 Neural Models Online</span>
+      </span>
+      <button class="pill-btn nav-action-btn" onclick="navigateTo('inference')">
+        Run Inference &rarr;
+      </button>
+    </div>
+  </header>
 
-    <!-- Top Navigation Pill -->
-    <header class="nav-bar float-panel" data-float-speed="5.5" data-float-delay="0.1">
-      <div class="nav-brand">
-        <div class="brand-core"></div>
-        <span class="brand-text">CHANNEL AI</span>
-        <span class="brand-subtag">· DeepMIMO 3.5 GHz</span>
+  <!-- =========================================================
+       PAGE: OVERVIEW
+       ========================================================= -->
+  <main class="page-view active" id="page-overview">
+    <div class="viewport-stage">
+
+      <!-- Hero grid -->
+      <div class="grid-scene-top" id="hero">
+
+        <!-- PANEL 1: MIMO Core Orb -->
+        <section class="card-panel hero-orb-card">
+          <div class="eclipse-container">
+            <div class="orbital-ring ring-1"></div>
+            <div class="orbital-ring ring-2"></div>
+            <div class="orbital-ring ring-3"></div>
+            <div class="eclipse-sphere">
+              <div class="lens-flare"></div>
+              <h1 class="eclipse-title">MIMO</h1>
+            </div>
+          </div>
+          <div class="hero-orb-content">
+            <p class="hero-desc">
+              Adaptive machine learning based wireless channel intelligence powered by DeepMIMO Remcom 3.5 GHz ray-tracing.
+            </p>
+            <button class="pill-btn pill-btn-white glow-hover" onclick="navigateTo('inference')">Test Channel</button>
+          </div>
+        </section>
+
+        <!-- PANEL 2: CTA Panel -->
+        <section class="card-panel main-cta-card">
+          <div class="cta-inner">
+            <div class="badge-pill">
+              <span class="badge-dot"></span>
+              <span class="badge-txt">ASU Campus · 3.5 GHz · 100 MHz</span>
+            </div>
+
+            <h2 class="cta-heading">Elevate your<br>channel intel.</h2>
+            <p class="cta-sub">
+              Real-time deep learning prediction for 64-beam steering, signal strength (RSS), LOS/NLOS detection, and 4.5x CSI autoencoding.
+            </p>
+
+            <form class="waitlist-form" id="quickPredictForm">
+              <input type="text" id="quickInput" placeholder="UE Coordinates (X, Y, Z in meters)..." class="glass-input" value="X: 145.0, Y: 95.0, Z: 1.5">
+              <button type="submit" class="pill-btn pill-btn-white glow-hover">Predict</button>
+            </form>
+            <div class="form-feedback" id="formFeedback">✓ Base Station active at [166, 104, 22]m · 85,157 Ray-Traced Points</div>
+          </div>
+
+          <!-- Static Cube Cluster -->
+          <div class="cubes-cluster" id="cubesCluster">
+            <div class="cube-assembly cube-lg" data-rot-x="24" data-rot-y="-35">
+              <div class="cube-face face-front"></div>
+              <div class="cube-face face-back"></div>
+              <div class="cube-face face-right"></div>
+              <div class="cube-face face-left"></div>
+              <div class="cube-face face-top"></div>
+              <div class="cube-face face-bottom"></div>
+            </div>
+            <div class="cube-assembly cube-md" data-rot-x="-16" data-rot-y="42">
+              <div class="cube-face face-front"></div>
+              <div class="cube-face face-back"></div>
+              <div class="cube-face face-right"></div>
+              <div class="cube-face face-left"></div>
+              <div class="cube-face face-top"></div>
+              <div class="cube-face face-bottom"></div>
+            </div>
+            <div class="cube-assembly cube-sm" data-rot-x="28" data-rot-y="18">
+              <div class="cube-face face-front"></div>
+              <div class="cube-face face-back"></div>
+              <div class="cube-face face-right"></div>
+              <div class="cube-face face-left"></div>
+              <div class="cube-face face-top"></div>
+              <div class="cube-face face-bottom"></div>
+            </div>
+            <div class="cube-assembly cube-xs" data-rot-x="-22" data-rot-y="-48">
+              <div class="cube-face face-front"></div>
+              <div class="cube-face face-back"></div>
+              <div class="cube-face face-right"></div>
+              <div class="cube-face face-left"></div>
+              <div class="cube-face face-top"></div>
+              <div class="cube-face face-bottom"></div>
+            </div>
+          </div>
+        </section>
       </div>
-      <nav class="nav-links">
-        <a href="#hero">Overview</a>
-        <a href="#workbench">Inference</a>
-        <a href="#benchmarks">Benchmarks</a>
-        <a href="#mobility">Mobility</a>
-      </nav>
-      <div class="nav-actions">
-        <span class="model-status-pill">
-          <span class="status-dot"></span>
-          <span class="status-txt">7 Neural Models Online</span>
-        </span>
-        <button class="pill-btn nav-btn" onclick="scrollToSection('workbench')">
-          <span>Run Inference</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+
+      <!-- Overview Stats Row -->
+      <div class="overview-stats-row">
+        <div class="stat-card card-panel">
+          <span class="stat-icon">📡</span>
+          <div class="stat-num">98.8%</div>
+          <div class="stat-lbl">Beam Prediction Top-1</div>
+        </div>
+        <div class="stat-card card-panel">
+          <span class="stat-icon">📶</span>
+          <div class="stat-num">0.041 dB</div>
+          <div class="stat-lbl">RSS Estimation RMSE</div>
+        </div>
+        <div class="stat-card card-panel">
+          <span class="stat-icon">🔍</span>
+          <div class="stat-num">99.97%</div>
+          <div class="stat-lbl">LOS/NLOS Accuracy</div>
+        </div>
+        <div class="stat-card card-panel">
+          <span class="stat-icon">🗜️</span>
+          <div class="stat-num">4.5×</div>
+          <div class="stat-lbl">CSI Compression Ratio</div>
+        </div>
       </div>
-    </header>
 
-    <!-- Top Floating Row: Radiant MIMO Core Orb + Channel Intelligence Main Panel -->
-    <div class="grid-scene-top" id="hero">
+      <!-- Footer ribbon -->
+      <footer class="proof-ribbon">
+        <span class="proof-label">Trained on DeepMIMO v3 · ASU Campus Ray-Tracing</span>
+        <div class="proof-logos">
+          <span class="logo-item">⬡ 85,157 Active Points</span>
+          <span class="logo-item">3.5 GHz Carrier</span>
+          <span class="logo-item">64-DFT Codebook</span>
+          <span class="logo-item">Remcom InSite</span>
+        </div>
+      </footer>
 
-      <!-- PANEL 1: Radiant Beamforming / MIMO Core Orb -->
-      <section class="card-panel hero-orb-card float-panel" data-float-speed="6.2" data-float-delay="0.2">
-        <div class="eclipse-container">
-          <div class="orbital-ring ring-1"></div>
-          <div class="orbital-ring ring-2"></div>
-          <div class="orbital-ring ring-3"></div>
-          
-          <div class="eclipse-sphere">
-            <div class="lens-flare"></div>
-            <h1 class="eclipse-title">MIMO</h1>
+    </div>
+  </main>
+
+  <!-- =========================================================
+       PAGE: INFERENCE
+       ========================================================= -->
+  <main class="page-view" id="page-inference">
+    <div class="viewport-stage">
+
+      <section class="card-panel workbench-card" id="workbench">
+        <!-- Header Inside Card -->
+        <div class="workbench-header-wrap">
+          <span class="eyebrow-tag">REAL-TIME INFERENCE ENGINE</span>
+          <h2 class="workbench-title">Interactive Wireless Channel Workbench</h2>
+          <p class="workbench-subtitle">Adjust UE coordinates across ASU Campus to observe adaptive beam selection, signal strength, and link state.</p>
+          <div class="workbench-presets">
+            <button class="preset-pill active" data-x="145" data-y="95" data-z="1.5">Main Plaza (LOS)</button>
+            <button class="preset-pill" data-x="80" data-y="45" data-z="1.5">Courtyard (NLOS)</button>
+            <button class="preset-pill" data-x="220" data-y="180" data-z="1.5">Building Shadow</button>
+            <button class="preset-pill" data-x="285" data-y="215" data-z="1.5">Cell Edge</button>
           </div>
         </div>
 
-        <div class="hero-orb-content">
-          <p class="hero-desc">
-            Adaptive machine learning based wireless channel intelligence powered by DeepMIMO Remcom 3.5 GHz ray-tracing.
-          </p>
-          <button class="pill-btn pill-btn-white glow-hover" onclick="scrollToSection('workbench')">Test Channel</button>
+        <div class="workbench-core-grid">
+          <!-- Column 1: Coordinate Controls & Telemetry -->
+          <div class="workbench-sliders-col">
+            <div class="slider-box">
+              <div class="slider-meta">
+                <span>X Coordinate (East-West)</span>
+                <span class="mono-val" id="val-x">145.0 m</span>
+              </div>
+              <input type="range" id="input-x" min="10" max="300" step="1" value="145" class="glass-slider">
+            </div>
+            <div class="slider-box">
+              <div class="slider-meta">
+                <span>Y Coordinate (North-South)</span>
+                <span class="mono-val" id="val-y">95.0 m</span>
+              </div>
+              <input type="range" id="input-y" min="10" max="250" step="1" value="95" class="glass-slider">
+            </div>
+            <div class="slider-box">
+              <div class="slider-meta">
+                <span>Z Elevation Height</span>
+                <span class="mono-val" id="val-z">1.5 m</span>
+              </div>
+              <input type="range" id="input-z" min="1.0" max="10.0" step="0.5" value="1.5" class="glass-slider">
+            </div>
+
+            <button id="btn-predict-now" class="pill-btn pill-btn-purple glow-hover">
+              <span>⚡ Run Neural Channel Inference</span>
+            </button>
+
+            <div class="telemetry-compact-grid">
+              <div class="t-cell">
+                <span class="t-lbl">3D DISTANCE TO BS</span>
+                <span class="t-val" id="wb-dist-3d">30.7 m</span>
+              </div>
+              <div class="t-cell">
+                <span class="t-lbl">DIRECT AOD AZIMUTH</span>
+                <span class="t-val" id="wb-aod-az">-156.8°</span>
+              </div>
+              <div class="t-cell">
+                <span class="t-lbl">CHANNEL LINK STATE</span>
+                <span class="t-val green" id="wb-los-badge">LOS Direct</span>
+              </div>
+              <div class="t-cell">
+                <span class="t-lbl">CSI COMPRESSION</span>
+                <span class="t-val purple" id="wb-ae-ratio">4.5x (13.3 dB)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Polar Radar & Beam Probabilities -->
+          <div class="workbench-radar-col">
+            <div class="radar-box-wrapper">
+              <canvas id="polar-radar-canvas" width="320" height="320"></canvas>
+              <div class="radar-label-badge">
+                <span class="rl-title">Active Beam</span>
+                <span class="rl-val" id="radar-beam-val">Beam #4 (-157.14°)</span>
+              </div>
+            </div>
+            <div class="top3-beams-container" id="topBeamsList">
+              <div class="cand-row">
+                <span class="cand-name">Beam #4</span>
+                <div class="cand-track"><div class="cand-fill" style="width: 20.6%;"></div></div>
+                <span class="cand-pct">20.6%</span>
+              </div>
+              <div class="cand-row">
+                <span class="cand-name">Beam #3</span>
+                <div class="cand-track"><div class="cand-fill" style="width: 17.7%;"></div></div>
+                <span class="cand-pct">17.7%</span>
+              </div>
+              <div class="cand-row">
+                <span class="cand-name">Beam #6</span>
+                <div class="cand-track"><div class="cand-fill" style="width: 15.6%;"></div></div>
+                <span class="cand-pct">15.6%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Signal Strength / RSS Card -->
+          <div class="workbench-gauge-col">
+            <div class="gauge-card-inner">
+              <span class="gc-label">ESTIMATED SIGNAL STRENGTH (RSS)</span>
+              <div class="gc-big-metric" id="gauge-rss-val">-73.99 <span class="unit">dB</span></div>
+              <div class="rss-bar-track">
+                <div class="rss-bar-glow" id="rssBarGlow" style="width: 94%;"></div>
+              </div>
+              <div class="rss-ticks">
+                <span>-140 dB (Floor)</span>
+                <span>-105 dB</span>
+                <span>-70 dB (Peak)</span>
+              </div>
+              <div class="link-condition-tag" id="linkConditionTag">
+                <span class="pulse-dot"></span>
+                <span id="linkQualityTxt">Link Quality: Excellent</span>
+              </div>
+              <div class="path-loss-row">
+                <span>Dominant Path Loss:</span>
+                <strong id="gaugePathLoss">73.99 dB</strong>
+              </div>
+              <div class="path-loss-row">
+                <span>Gradient Boosting RMSE:</span>
+                <strong class="rmse-highlight" id="gaugeRmse">0.041 dB (R² = 1.00)</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- PANEL 2: Elevate your Channel Intelligence + 3D Anti-Gravity Cubes -->
-      <section class="card-panel main-cta-card float-panel" data-float-speed="5.2" data-float-delay="0.5">
-        <div class="cta-inner">
-          <div class="badge-pill">
-            <span class="badge-dot"></span>
-            <span class="badge-txt">ASU Campus · 3.5 GHz · 100 MHz</span>
-          </div>
-
-          <h2 class="cta-heading">Elevate your<br>channel intel.</h2>
-          <p class="cta-sub">
-            Real-time deep learning prediction for 64-beam steering, signal strength (RSS), LOS/NLOS detection, and 4.5x CSI autoencoding.
-          </p>
-
-          <form class="waitlist-form" id="quickPredictForm">
-            <input type="text" id="quickInput" placeholder="UE Coordinates (X, Y, Z in meters)..." class="glass-input" value="X: 145.0, Y: 95.0, Z: 1.5">
-            <button type="submit" class="pill-btn pill-btn-white glow-hover">Predict</button>
-          </form>
-          <div class="form-feedback" id="formFeedback">✓ Base Station active at [166, 104, 22]m · 85,157 Ray-Traced Points</div>
+      <!-- Channel Specs Card below workbench -->
+      <section class="card-panel channel-specs-section">
+        <div class="panel-header">
+          <h3 class="panel-title">Channel Physics &amp; Specs</h3>
+          <p class="panel-subtitle">Remcom Wireless InSite 3.3 ray-tracing propagation specifications for ASU Campus.</p>
         </div>
-
-        <!-- 3D Anti-Gravity CSS Cubes Floating Cluster (Representing Multipath Scatterers & Antennas) -->
-        <div class="cubes-cluster" id="cubesCluster">
-          <div class="cube-assembly cube-lg" data-rot-x="24" data-rot-y="-35" data-float-speed="4.2" data-float-delay="0.3">
-            <div class="cube-face face-front"></div>
-            <div class="cube-face face-back"></div>
-            <div class="cube-face face-right"></div>
-            <div class="cube-face face-left"></div>
-            <div class="cube-face face-top"></div>
-            <div class="cube-face face-bottom"></div>
+        <div class="specs-mini-grid">
+          <div class="spec-mini-item">
+            <span class="smi-label">Carrier Frequency</span>
+            <span class="smi-val">3.50 GHz (Mid-Band)</span>
           </div>
-
-          <div class="cube-assembly cube-md" data-rot-x="-16" data-rot-y="42" data-float-speed="4.9" data-float-delay="0.7">
-            <div class="cube-face face-front"></div>
-            <div class="cube-face face-back"></div>
-            <div class="cube-face face-right"></div>
-            <div class="cube-face face-left"></div>
-            <div class="cube-face face-top"></div>
-            <div class="cube-face face-bottom"></div>
+          <div class="spec-mini-item">
+            <span class="smi-label">Bandwidth</span>
+            <span class="smi-val">100 MHz (5G NR)</span>
           </div>
-
-          <div class="cube-assembly cube-sm" data-rot-x="28" data-rot-y="18" data-float-speed="3.8" data-float-delay="1.1">
-            <div class="cube-face face-front"></div>
-            <div class="cube-face face-back"></div>
-            <div class="cube-face face-right"></div>
-            <div class="cube-face face-left"></div>
-            <div class="cube-face face-top"></div>
-            <div class="cube-face face-bottom"></div>
+          <div class="spec-mini-item">
+            <span class="smi-label">BS Antenna Array</span>
+            <span class="smi-val">64-ULA (DFT Codebook)</span>
           </div>
-
-          <div class="cube-assembly cube-xs" data-rot-x="-22" data-rot-y="-48" data-float-speed="5.4" data-float-delay="0.9">
-            <div class="cube-face face-front"></div>
-            <div class="cube-face face-back"></div>
-            <div class="cube-face face-right"></div>
-            <div class="cube-face face-left"></div>
-            <div class="cube-face face-top"></div>
-            <div class="cube-face face-bottom"></div>
+          <div class="spec-mini-item">
+            <span class="smi-label">Active UE Points</span>
+            <span class="smi-val">85,157 Ray-Traced Positions</span>
           </div>
         </div>
       </section>
 
     </div>
+  </main>
 
-    <!-- Middle Floating Row: Live Channel Workbench with Sliders, Polar Radar & RSS Gauge -->
-    <section class="card-panel workbench-card float-panel" id="workbench" data-float-speed="6.0" data-float-delay="0.35">
-      <div class="panel-header-flex">
+  <!-- =========================================================
+       PAGE: BENCHMARKS
+       ========================================================= -->
+  <main class="page-view" id="page-benchmarks">
+    <div class="viewport-stage">
+
+      <div class="page-header-row">
         <div>
-          <span class="eyebrow-tag">REAL-TIME INFERENCE ENGINE</span>
-          <h3 class="panel-title">Interactive Wireless Channel Workbench</h3>
-          <p class="panel-subtitle">Adjust UE coordinates across ASU Campus to observe adaptive beam selection, signal strength, and link state.</p>
-        </div>
-        <div class="workbench-presets">
-          <button class="preset-pill active" data-x="145" data-y="95" data-z="1.5">Main Plaza (LOS)</button>
-          <button class="preset-pill" data-x="80" data-y="45" data-z="1.5">Courtyard (NLOS)</button>
-          <button class="preset-pill" data-x="220" data-y="180" data-z="1.5">Building Shadow</button>
-          <button class="preset-pill" data-x="285" data-y="215" data-z="1.5">Cell Edge</button>
+          <span class="eyebrow-tag">MODEL PERFORMANCE</span>
+          <h2 class="page-title">Model Benchmarks</h2>
+          <p class="page-subtitle-txt">Validation performance across 15,000 ray-traced channel points at 3.5 GHz.</p>
         </div>
       </div>
 
-      <div class="workbench-core-grid">
-        <!-- Interactive Coordinate Controls -->
-        <div class="workbench-sliders-col">
-          <div class="slider-box">
-            <div class="slider-meta">
-              <span>X Coordinate (East-West)</span>
-              <span class="mono-val" id="val-x">145.0 m</span>
-            </div>
-            <input type="range" id="input-x" min="10" max="300" step="1" value="145" class="glass-slider">
-          </div>
+      <section class="card-panel bench-full-card" id="benchmarks">
 
-          <div class="slider-box">
-            <div class="slider-meta">
-              <span>Y Coordinate (North-South)</span>
-              <span class="mono-val" id="val-y">95.0 m</span>
-            </div>
-            <input type="range" id="input-y" min="10" max="250" step="1" value="95" class="glass-slider">
-          </div>
+        <div class="pricing-table pricing-table-4">
 
-          <div class="slider-box">
-            <div class="slider-meta">
-              <span>Z Elevation Height</span>
-              <span class="mono-val" id="val-z">1.5 m</span>
-            </div>
-            <input type="range" id="input-z" min="1.0" max="10.0" step="0.5" value="1.5" class="glass-slider">
-          </div>
-
-          <button id="btn-predict-now" class="pill-btn pill-btn-purple glow-hover">
-            <span>⚡ Run Neural Channel Inference</span>
-          </button>
-
-          <div class="telemetry-compact-grid">
-            <div class="t-cell">
-              <span class="t-lbl">3D Distance to BS</span>
-              <span class="t-val" id="wb-dist-3d">29.8 m</span>
-            </div>
-            <div class="t-cell">
-              <span class="t-lbl">Direct AoD Azimuth</span>
-              <span class="t-val" id="wb-aod-az">-156.8°</span>
-            </div>
-            <div class="t-cell">
-              <span class="t-lbl">Channel Link State</span>
-              <span class="t-val green" id="wb-los-badge">LOS Direct</span>
-            </div>
-            <div class="t-cell">
-              <span class="t-lbl">CSI Compression</span>
-              <span class="t-val purple" id="wb-ae-ratio">4.5x (13.3 dB)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 64-Beam Polar Steering Radar -->
-        <div class="workbench-radar-col">
-          <div class="radar-box-wrapper">
-            <canvas id="polar-radar-canvas" width="280" height="280"></canvas>
-            <div class="radar-label-badge">
-              <span class="rl-title">Active Beam</span>
-              <span class="rl-val" id="radar-beam-val">Beam #4 (-157.1°)</span>
-            </div>
-          </div>
-          <div class="top3-beams-container" id="topBeamsList">
-            <!-- Candidate bars dynamically injected -->
-          </div>
-        </div>
-
-        <!-- Received Signal Strength & Quality Gauge -->
-        <div class="workbench-gauge-col">
-          <div class="gauge-card-inner">
-            <span class="gc-label">Estimated Signal Strength (RSS)</span>
-            <div class="gc-big-metric" id="gauge-rss-val">-73.99 <span class="unit">dB</span></div>
-            <div class="rss-bar-track">
-              <div class="rss-bar-glow" id="rssBarGlow" style="width: 78%;"></div>
-            </div>
-            <div class="rss-ticks">
-              <span>-140 dB (Floor)</span>
-              <span>-105 dB</span>
-              <span>-70 dB (Peak)</span>
-            </div>
-            <div class="link-condition-tag" id="linkConditionTag">
-              <span class="pulse-dot"></span>
-              <span id="linkQualityTxt">Link Quality: Excellent</span>
-            </div>
-            <div class="path-loss-row">
-              <span>Dominant Path Loss:</span>
-              <strong id="gaugePathLoss">73.99 dB</strong>
-            </div>
-            <div class="path-loss-row">
-              <span>Gradient Boosting RMSE:</span>
-              <strong class="green">0.041 dB (R² = 1.00)</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bottom Floating Row: 4-Task Benchmark Matrix & Scenario Query Card -->
-    <div class="grid-scene-bottom">
-
-      <!-- PANEL 3: 4-Task Machine Learning Benchmark Matrix -->
-      <section id="benchmarks" class="card-panel pricing-card float-panel" data-float-speed="6.4" data-float-delay="0.4">
-        <div class="panel-header">
-          <h3 class="panel-title">Model Benchmarks</h3>
-          <p class="panel-subtitle">Validation performance across 15,000 ray-traced channel points at 3.5 GHz.</p>
-        </div>
-
-        <div class="pricing-table">
-          <!-- Task 1 & 2: Beam & RSS -->
+          <!-- Task 1: Beam Prediction -->
           <div class="table-column">
             <div class="tier-header">
               <span class="tier-name">Beam Predictor</span>
-              <button class="tier-btn" onclick="scrollToSection('workbench')">Test Codebook</button>
+              <button class="tier-btn" onclick="navigateTo('inference')">Test Codebook</button>
               <div class="tier-price">98.8%<span>Top-1</span></div>
             </div>
             <ul class="tier-features">
@@ -281,12 +369,12 @@
             </ul>
           </div>
 
-          <!-- Task 2 Highlight: RSS Estimation -->
+          <!-- Task 2: RSS -->
           <div class="table-column tier-highlight">
             <div class="tier-header">
               <span class="tier-badge">Best Fit</span>
               <span class="tier-name">RSS Estimator</span>
-              <button class="tier-btn tier-btn-active" onclick="scrollToSection('workbench')">Estimate Power</button>
+              <button class="tier-btn tier-btn-active" onclick="navigateTo('inference')">Estimate Power</button>
               <div class="tier-price">0.041<span>dB RMSE</span></div>
             </div>
             <ul class="tier-features">
@@ -297,67 +385,150 @@
             </ul>
           </div>
 
-          <!-- Task 3 & 4: LOS & Autoencoder -->
+          <!-- Task 3: LOS -->
           <div class="table-column">
             <div class="tier-header">
-              <span class="tier-name">LOS / Autoencoder</span>
-              <button class="tier-btn" onclick="scrollToSection('workbench')">View Latent</button>
-              <div class="tier-price">99.97%<span>LOS Acc</span></div>
+              <span class="tier-name">LOS Classifier</span>
+              <button class="tier-btn" onclick="navigateTo('inference')">Test Classifier</button>
+              <div class="tier-price">99.97%<span>Accuracy</span></div>
             </div>
             <ul class="tier-features">
-              <li><span>LOS Classifier</span><strong>Gradient Boost</strong></li>
-              <li><span>CSI Compression</span><strong>4.5x (18D→4D)</strong></li>
+              <li><span>Algorithm</span><strong>Gradient Boost</strong></li>
+              <li><span>Precision</span><strong>99.96%</strong></li>
+              <li><span>Recall</span><strong>99.98%</strong></li>
+              <li><span>F1 Score</span><strong>0.9997</strong></li>
+            </ul>
+          </div>
+
+          <!-- Task 4: Autoencoder -->
+          <div class="table-column">
+            <div class="tier-header">
+              <span class="tier-name">CSI Autoencoder</span>
+              <button class="tier-btn" onclick="navigateTo('inference')">View Latent</button>
+              <div class="tier-price">4.5×<span>Compression</span></div>
+            </div>
+            <ul class="tier-features">
+              <li><span>Architecture</span><strong>Keras AE</strong></li>
+              <li><span>CSI Compression</span><strong>18D → 4D</strong></li>
               <li><span>Reconstruction SNR</span><strong>13.29 dB</strong></li>
               <li><span>Overhead Reduction</span><strong>77.8%</strong></li>
             </ul>
           </div>
-        </div>
-      </section>
 
-      <!-- PANEL 4: DeepMIMO Channel Scenario Query & Diagnostics -->
-      <section id="mobility" class="card-panel contact-card float-panel" data-float-speed="5.8" data-float-delay="0.6">
-        <div class="panel-header">
-          <h3 class="panel-title">Channel Physics & Specs</h3>
-          <p class="panel-subtitle">Remcom Wireless InSite 3.3 ray-tracing propagation specifications.</p>
         </div>
 
-        <form class="contact-form" id="channelPhysicsForm" onsubmit="event.preventDefault()">
-          <div class="form-row">
-            <div class="input-group">
-              <label>Carrier Frequency</label>
-              <input type="text" value="3.50 GHz (Mid-Band)" class="glass-input" readonly>
-            </div>
-            <div class="input-group">
-              <label>Bandwidth</label>
-              <input type="text" value="100 MHz (5G NR)" class="glass-input" readonly>
-            </div>
+        <!-- Benchmark summary table -->
+        <div class="bench-summary-table">
+          <div class="bst-header">
+            <span>Task</span><span>Model</span><span>Primary Metric</span><span>Score</span><span>Dataset Split</span>
           </div>
-          <div class="input-group">
-            <label>Base Station Coordinates</label>
-            <input type="text" value="[166.0, 104.0, 22.0] m (Rooftop)" class="glass-input" readonly>
+          <div class="bst-row">
+            <span>Beam Selection (T1)</span><span>Random Forest</span><span>Top-1 Accuracy</span><span class="green">98.8%</span><span>80/20</span>
           </div>
-          <div class="input-group">
-            <label>Multipath Propagation Modeling</label>
-            <textarea rows="3" class="glass-input" readonly>10 Paths per UE with complex gain, phase, delay spread, azimuth & elevation AoA/AoD angles. 6 reflections, 1 diffraction.</textarea>
+          <div class="bst-row">
+            <span>RSS Estimation (T2)</span><span>Gradient Boost</span><span>RMSE</span><span class="green">0.041 dB</span><span>80/20</span>
           </div>
-          <button type="button" class="pill-btn pill-btn-white submit-btn glow-hover" onclick="scrollToSection('workbench')">Inspect Active Link</button>
-        </form>
+          <div class="bst-row">
+            <span>LOS Detection (T3)</span><span>Gradient Boost</span><span>Accuracy</span><span class="green">99.97%</span><span>80/20</span>
+          </div>
+          <div class="bst-row">
+            <span>CSI Compression (T4)</span><span>Keras AE</span><span>SNR</span><span class="green">13.29 dB</span><span>85/15</span>
+          </div>
+        </div>
+
       </section>
 
     </div>
+  </main>
 
-    <!-- Social Proof / Dataset Citation Ribbon -->
-    <footer class="proof-ribbon float-panel" data-float-speed="7.2" data-float-delay="0.7">
-      <span class="proof-label">Trained on DeepMIMO v3 · ASU Campus Ray-Tracing</span>
-      <div class="proof-logos">
-        <span class="logo-item">⬡ 85,157 Active Points</span>
-        <span class="logo-item">3.5 GHz Carrier</span>
-        <span class="logo-item">64-DFT Codebook</span>
-        <span class="logo-item">Remcom InSite</span>
+  <!-- =========================================================
+       PAGE: MOBILITY / CHANNEL PHYSICS
+       ========================================================= -->
+  <main class="page-view" id="page-mobility">
+    <div class="viewport-stage">
+
+      <div class="page-header-row">
+        <div>
+          <span class="eyebrow-tag">PROPAGATION ENVIRONMENT</span>
+          <h2 class="page-title">Channel Physics &amp; Specs</h2>
+          <p class="page-subtitle-txt">Remcom Wireless InSite 3.3 ray-tracing propagation specifications for ASU Campus.</p>
+        </div>
       </div>
-    </footer>
 
-  </div>
+      <div class="mobility-grid">
+
+        <!-- Spec card -->
+        <section class="card-panel contact-card" id="mobility">
+          <div class="panel-header">
+            <h3 class="panel-title">Scenario Configuration</h3>
+            <p class="panel-subtitle">DeepMIMO ray-tracing dataset parameters.</p>
+          </div>
+          <form class="contact-form" id="channelPhysicsForm" onsubmit="event.preventDefault()">
+            <div class="form-row">
+              <div class="input-group">
+                <label>Carrier Frequency</label>
+                <input type="text" value="3.50 GHz (Mid-Band)" class="glass-input" readonly>
+              </div>
+              <div class="input-group">
+                <label>Bandwidth</label>
+                <input type="text" value="100 MHz (5G NR)" class="glass-input" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label>Base Station Height</label>
+                <input type="text" value="22.0 m (Rooftop)" class="glass-input" readonly>
+              </div>
+              <div class="input-group">
+                <label>UE Height</label>
+                <input type="text" value="1.5 m (Ground Level)" class="glass-input" readonly>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Base Station Coordinates</label>
+              <input type="text" value="[166.0, 104.0, 22.0] m (Rooftop)" class="glass-input" readonly>
+            </div>
+            <div class="input-group">
+              <label>Multipath Propagation Modeling</label>
+              <textarea rows="3" class="glass-input" readonly>10 Paths per UE with complex gain, phase, delay spread, azimuth &amp; elevation AoA/AoD angles. 6 reflections, 1 diffraction.</textarea>
+            </div>
+            <button type="button" class="pill-btn pill-btn-white submit-btn glow-hover" onclick="navigateTo('inference')">Inspect Active Link</button>
+          </form>
+        </section>
+
+        <!-- Propagation stats -->
+        <div class="mobility-stats-col">
+
+          <div class="card-panel mob-stat-card">
+            <div class="mob-stat-label">Active UE Positions</div>
+            <div class="mob-stat-value">85,157</div>
+            <div class="mob-stat-sub">Ray-traced points across ASU campus grid</div>
+          </div>
+
+          <div class="card-panel mob-stat-card">
+            <div class="mob-stat-label">Antenna Configuration</div>
+            <div class="mob-stat-value">64-ULA</div>
+            <div class="mob-stat-sub">Uniform Linear Array · DFT Codebook</div>
+          </div>
+
+          <div class="card-panel mob-stat-card">
+            <div class="mob-stat-label">Propagation Paths</div>
+            <div class="mob-stat-value">10 / UE</div>
+            <div class="mob-stat-sub">6 reflections · 1 diffraction per path</div>
+          </div>
+
+          <div class="card-panel mob-stat-card">
+            <div class="mob-stat-label">Ray-Tracing Tool</div>
+            <div class="mob-stat-value">Remcom</div>
+            <div class="mob-stat-sub">Wireless InSite 3.3 · DeepMIMO v3</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
