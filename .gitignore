@@ -7,8 +7,10 @@
 deepmimo_scenarios/
 
 # --- LARGE MODEL FILES (exceeds GitHub limits) ---
-models/beam_spatial.pkl     # 107 MB  (KNN spatial index)
-models/beam_rf.pkl          # 22 MB   (Random Forest 64-class)
+# 107 MB (KNN spatial index)
+models/beam_spatial.pkl
+# 22 MB (Random Forest 64-class)
+models/beam_rf.pkl
 
 # --- Python cache ---
 __pycache__/
